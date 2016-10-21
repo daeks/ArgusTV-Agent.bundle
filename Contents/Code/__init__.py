@@ -42,7 +42,10 @@ class ArgusTVAgent(Agent.Movies):
 			xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
 			
 			metadata.summary = xml_data.xpath('Description')[0].text
-			metadata.genres.add(xml_data.xpath('Category')[0].text)
+			
+			metadata.genres.clear()
+			for genre in xml_data.xpath('Category')[0].text.split(','):
+				metadata.genres.add(genre)
 			
 			date = Datetime.ParseDate(xml_data.xpath('ProgramStartTime')[0].text)
 			metadata.originally_available_at = date.date()
