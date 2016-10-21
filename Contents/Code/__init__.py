@@ -1,5 +1,3 @@
-STATIC_POSTER = 'static.png'
-
 import hashlib, os
 
 def Start():
@@ -42,5 +40,12 @@ class ArgusTVAgent(Agent.Movies):
 		if os.path.isfile(os.path.join(path, root_file + '.arg')):
 			data = Core.storage.load(os.path.join(path, root_file + '.arg'))
 			xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
+			
 			metadata.summary = xml_data.xpath('Description')[0].text
+			metadata.genres.add(xml_data.xpath('Category')[0].text)
+			
+			date = Datetime.ParseDate(xml_data.xpath('ProgramStartTime')[0].text)
+			metadata.originally_available_at = date.date()
+			metadata.year = date.year
+			
 			Log('Metadata loaded for %s' % xml_data.xpath('Title')[0].text)
