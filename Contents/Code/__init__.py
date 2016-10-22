@@ -40,21 +40,23 @@ class ArgusTVAgent(Agent.Movies):
 			xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
 			
 			metadata.title = xml_data.xpath('Title')[0].text
-			if xml_data.xpath('SubTitle')[0].text != '':
+			if xml_data.xpath('SubTitle')[0] and xml_data.xpath('SubTitle')[0].text != '':
 				metadata.title = metadata.title + ' - ' + xml_data.xpath('SubTitle')[0].text
 			
 			metadata.summary = '(' + xml_data.xpath('ChannelDisplayName')[0].text + ') ' + xml_data.xpath('Description')[0].text
 			
 			metadata.genres.clear()
-			for genre in xml_data.xpath('Category')[0].text.split(','):
-				metadata.genres.add(genre.strip())
+			if xml_data.xpath('Category')[0]:
+				for genre in xml_data.xpath('Category')[0].text.split(','):
+					metadata.genres.add(genre.strip())
 				
 			metadata.roles.clear()
-			for actor_data in xml_data.xpath('Actors')[0].text.split(';'):
-				actor = actor_data.split('(');
-				role = metadata.roles.new()
-				role.name = actor[0].strip()
-				role.role = actor[1][:-1]
+			if xml_data.xpath('Actors')[0]:
+				for actor_data in xml_data.xpath('Actors')[0].text.split(';'):
+					actor = actor_data.split('(');
+					role = metadata.roles.new()
+					role.name = actor[0].strip()
+					role.role = actor[1][:-1]
 			
 			date = Datetime.ParseDate(xml_data.xpath('ProgramStartTime')[0].text)
 			metadata.originally_available_at = date.date()
