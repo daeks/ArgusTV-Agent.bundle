@@ -40,18 +40,18 @@ class ArgusTVAgent(Agent.Movies):
 			xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
 			
 			metadata.title = xml_data.xpath('Title')[0].text
-			if xml_data.xpath('SubTitle')[0] and xml_data.xpath('SubTitle')[0].text != '':
+			if xml_data.xpath('SubTitle')[0].text:
 				metadata.title = metadata.title + ' - ' + xml_data.xpath('SubTitle')[0].text
 			
 			metadata.summary = '(' + xml_data.xpath('ChannelDisplayName')[0].text + ') ' + xml_data.xpath('Description')[0].text
 			
 			metadata.genres.clear()
-			if xml_data.xpath('Category')[0]:
+			if xml_data.xpath('Category')[0].text:
 				for genre in xml_data.xpath('Category')[0].text.split(','):
 					metadata.genres.add(genre.strip())
 				
 			metadata.roles.clear()
-			if xml_data.xpath('Actors')[0]:
+			if xml_data.xpath('Actors')[0].text:
 				for actor_data in xml_data.xpath('Actors')[0].text.split(';'):
 					actor = actor_data.split('(');
 					role = metadata.roles.new()
