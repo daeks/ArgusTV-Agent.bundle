@@ -8,8 +8,8 @@ class ArgusTVAgent(Agent.Movies):
 
 	name = 'Argus TV'
 	languages = [Locale.Language.NoLanguage]
-	primary_provider = True
-	accepts_from = ['com.plexapp.agents.localmedia']
+	primary_provider = False
+	contributes_to = ['com.plexapp.agents.none']
 
 	def search(self, results, media, lang):
 
@@ -39,11 +39,18 @@ class ArgusTVAgent(Agent.Movies):
 			data = Core.storage.load(os.path.join(path, root_file + '.arg'))
 			xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
 			
-			metadata.summary = xml_data.xpath('Description')[0].text
+			metadata.summary = '(' + xml_data.xpath('ChannelDisplayName')[0].text + ') ' + xml_data.xpath('Description')[0].text
 			
 			metadata.genres.clear()
 			for genre in xml_data.xpath('Category')[0].text.split(','):
-				metadata.genres.add(genre)
+				metadata.genres.add(genre.strip())
+				
+			metadata.roles.clear()
+			for actor_data in xml_data.xpath('Actors')[0].text.split(';'):
+				actor = actor_data.split('(');
+				role = metadata.roles.new()
+				role.name = actor[0].strip()
+				role.role = actor[1][:-1]
 			
 			date = Datetime.ParseDate(xml_data.xpath('ProgramStartTime')[0].text)
 			metadata.originally_available_at = date.date()
