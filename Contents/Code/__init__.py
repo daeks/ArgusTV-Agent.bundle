@@ -39,6 +39,10 @@ class ArgusTVAgent(Agent.Movies):
 			data = Core.storage.load(os.path.join(path, root_file + '.arg'))
 			xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
 			
+			metadata.title = xml_data.xpath('Title')[0].text
+			if xml_data.xpath('SubTitle')[0].text != '':
+				metadata.title = metadata.title + ' - ' + xml_data.xpath('SubTitle')[0].text
+			
 			metadata.summary = '(' + xml_data.xpath('ChannelDisplayName')[0].text + ') ' + xml_data.xpath('Description')[0].text
 			
 			metadata.genres.clear()
