@@ -15,7 +15,7 @@ class ArgusTVAgent(Agent.Movies):
 
   def search(self, results, media, lang):
 
-    results.Append(MetadataSearchResult(id = media.primary_metadata.id, name = media.name, year = None, score = 100, lang = lang))
+    results.Append(MetadataSearchResult(id = media.id, name = media.name, year = None, score = 100, lang = lang))
 
   def update(self, metadata, media, lang):
 
