@@ -2,6 +2,9 @@ import hashlib, os
 
 def Start():
   pass
+  
+def ValidatePrefs():
+  pass
 
 class ArgusTVAgent(Agent.Movies):
 
@@ -12,7 +15,7 @@ class ArgusTVAgent(Agent.Movies):
 
   def search(self, results, media, lang):
 
-    results.Append(MetadataSearchResult(id = media.id, name = media.name, year = None, score = 99, lang = lang))
+    results.Append(MetadataSearchResult(id = media.primary_metadata.id, name = media.name, year = None, score = 100, lang = lang))
 
   def update(self, metadata, media, lang):
 
@@ -32,10 +35,16 @@ class ArgusTVAgent(Agent.Movies):
       xml_data = XML.ElementFromString(data).xpath('//Recording')[0]
       
       metadata.title = xml_data.xpath('Title')[0].text
+      metadata.original_title = xml_data.xpath('Title')[0].text
       if xml_data.xpath('SubTitle')[0].text:
         metadata.title = metadata.title + ' - ' + xml_data.xpath('SubTitle')[0].text
       
-      metadata.summary = '(' + xml_data.xpath('ChannelDisplayName')[0].text + ') ' + xml_data.xpath('Description')[0].text
+      date = Datetime.ParseDate(xml_data.xpath('ProgramStartTime')[0].text)
+      metadata.originally_available_at = date.date()
+      metadata.year = date.year
+      
+      metadata.summary = '(' + xml_data.xpath('ChannelDisplayName')[0].text.upper() + ' / ' + date.date().strftime('%d-%b-%Y') + ' ' + date.time().strftime('%H:%M') + ') ' + xml_data.xpath('Description')[0].text
+      metadata.studio = xml_data.xpath('ChannelDisplayName')[0].text.upper()
       
       metadata.genres.clear()
       if xml_data.xpath('Category')[0].text:
@@ -49,9 +58,5 @@ class ArgusTVAgent(Agent.Movies):
           role = metadata.roles.new()
           role.name = actor[0].strip()
           role.role = actor[1][:-1]
-      
-      date = Datetime.ParseDate(xml_data.xpath('ProgramStartTime')[0].text)
-      metadata.originally_available_at = date.date()
-      metadata.year = date.year
-      
+                
       Log('Metadata loaded for %s' % xml_data.xpath('Title')[0].text)
