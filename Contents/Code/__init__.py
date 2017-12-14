@@ -54,11 +54,20 @@ class ArgusTVAgent(Agent.Movies):
         
             result = MetadataSearchResult(id=id, name=movie['title'], year=int(movie['release_date'].split('-')[0]) if movie['release_date'] else None, score=100, lang=Prefs['language'])
             results.Append(result)
+            Log('[DNET] Matched movie %s against IMDB %s' % (root_file, id))
+        
+        if len(results) == 0:
+          results.Append(MetadataSearchResult(id = media.id, name = media.name, year = None, score = 100, lang = Prefs['language']))
+          Log('[DNET] No IMDB match found for movie %s' % root_file)
+        else:
+          results.Append(MetadataSearchResult(id = media.id, name = media.name, year = None, score = 100, lang = Prefs['language']))
+          Log('[DNET] No IMDB match found for movie %s' % root_file)
       except:
-       Log('Could not retrieve data from PLEX for: %s' % media.name)
+       Log('[DNET] Could not retrieve data from PLEX for: %s' % root_file)
        results.Append(MetadataSearchResult(id = media.id, name = media.name, year = None, score = 100, lang = Prefs['language']))
     else:
       results.Append(MetadataSearchResult(id = media.id, name = media.name, year = None, score = 100, lang = Prefs['language']))
+      Log('[DNET] No metadata file available for %s' % root_file)
 
   def update(self, metadata, media, lang):
 
