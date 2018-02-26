@@ -1,12 +1,29 @@
 [
   {
+    "id": "format",
+    "label": "Argus TV Video Format",
+    "type": "enum",
+    "values": [
+      "ts",
+      "mp4",
+      "mkv"
+    ],
+    "default": "ts"
+  },
+  {
+    "id": "tmdb",
+    "label": "Enable Plex Movie Metadata",
+    "type": "bool",
+    "default": "true"
+  },
+  {
     "id": "language",
-    "label": "Language",
+    "label": "Plex Movie Language",
     "type": "enum",
     "values": [
       "en",
       "de"
     ],
     "default": "en"
-  },
+  }
 ]
