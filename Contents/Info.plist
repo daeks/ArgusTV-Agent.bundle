@@ -4,6 +4,8 @@
 <dict>
   <key>CFBundleIdentifier</key>
   <string>com.plexapp.agents.argustv</string>
+  <key>PlexAgentAttributionText</key>
+  <string>For this agent following setting needs to be enabled in ArgusTV:&lt;br/&gt;&lt;br/&gt;- Automatically create thumbnails for all television recordings&lt;br/&gt;- Always create .arg metadate files (also for NTFS volumes)&lt;br/&gt;&lt;br/&gt;Both settings can be found in the settings of the ArgusTV Scheduler Console.&lt;br/&gt;&lt;br/&gt;&lt;a href=&quot;http://forums.plex.tv/discussion/257004/rel-argustv-metadata-agent&quot;&gt;Plex Forum Support&lt;/a&gt;</string>
   <key>PlexFrameworkVersion</key>
   <string>2</string>
   <key>PlexPluginClass</key>
