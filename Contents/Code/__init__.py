@@ -14,15 +14,12 @@ COUNTRY_CODE = {'en': 'US',
                 'de': 'US'}
 
 def Start():
-  
   HTTP.Headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0'
   
 def ValidatePrefs():
-
   pass
 
 class ArgusTVAgent(Agent.Movies):
-
   name = 'Argus TV'
   languages = [Locale.Language.NoLanguage, Locale.Language.English, Locale.Language.German]
   primary_provider = True
@@ -30,7 +27,6 @@ class ArgusTVAgent(Agent.Movies):
   accepts_from = ['com.plexapp.agents.none']
 
   def search(self, results, media, lang, manual=False):
-  
     part = media.items[0].parts[0]
     path = os.path.dirname(part.file)
     (root_file, ext) = os.path.splitext(os.path.basename(part.file))
@@ -75,7 +71,6 @@ class ArgusTVAgent(Agent.Movies):
       Log('[ARGUS] No TMDB enabled for %s' % root_file)
 
   def update(self, metadata, media, lang):
-
     part = media.items[0].parts[0]
     path = os.path.dirname(part.file)
     (root_file, ext) = os.path.splitext(os.path.basename(part.file))
@@ -215,7 +210,6 @@ class ArgusTVAgent(Agent.Movies):
       Log('[ARGUS] Metadata loaded for %s' % xml_data.xpath('Title')[0].text)
 
 def imdb_id_from_tmdb(tmdb_id):
-
   imdb_id = None
 
   try:
